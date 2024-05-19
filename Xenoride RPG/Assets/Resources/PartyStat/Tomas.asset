@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0690d5b4e67243b4f84f7ae7e8d792b2, type: 3}
+  m_Name: Tomas
+  m_EditorClassIdentifier: 
+  ID: Tomas
+  NameDisplay: Tomas
+  alliance: 1
+  sprite_wide_201px: {fileID: 21300000, guid: b63c57d070054194695a04d0188a8f09, type: 3}
+  battleStat:
+    VIT: 6
+    STR: 4
+    SHOOT: 2
+    DEX: 6
+    ENE: 3
+  HP: 54
+  SP: 12

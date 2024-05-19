@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0690d5b4e67243b4f84f7ae7e8d792b2, type: 3}
+  m_Name: GenericEnemyTest
+  m_EditorClassIdentifier: 
+  ID: GenericEnemyTest
+  NameDisplay: EnemyTest
+  alliance: 2
+  sprite_wide_201px: {fileID: 0}
+  battleStat:
+    VIT: 8
+    STR: 2
+    SHOOT: 1
+    DEX: 1
+    ENE: 2
+  HP: 72
+  SP: 8

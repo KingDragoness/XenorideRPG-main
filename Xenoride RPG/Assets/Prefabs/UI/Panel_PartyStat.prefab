@@ -424,6 +424,7 @@ GameObject:
   - component: {fileID: 1329507217997671163}
   - component: {fileID: 1329507217997671165}
   - component: {fileID: 1329507217997671162}
+  - component: {fileID: 7227604191668049851}
   m_Layer: 5
   m_Name: Panel_PartyStat
   m_TagString: Untagged
@@ -492,6 +493,25 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 4
+--- !u!114 &7227604191668049851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329507217997671160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a17600f1f6cd331479581da81c0e4777, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partyMember: {fileID: 0}
+  portrait: {fileID: 1329507217212401104}
+  hitpoint_slider: {fileID: 4293237643225787107}
+  sp_slider: {fileID: 4332660107962239709}
+  label_hitpoint: {fileID: 8970706773410626173}
+  label_sp: {fileID: 1663574835940883662}
+  label_partyName: {fileID: 1329507217214381597}
 --- !u!1 &1647878189242953370
 GameObject:
   m_ObjectHideFlags: 0
