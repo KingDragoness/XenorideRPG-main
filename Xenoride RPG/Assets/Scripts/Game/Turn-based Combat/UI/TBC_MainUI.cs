@@ -17,11 +17,14 @@ namespace Xenoride.TBC
         public TBC_UI_ActionCommand ui_Parent;
         public TBC_UI_ChildCommands ui_Children;
         public TBC_UI_PartyStats ui_PartyStats;
+        public GameObject gameOverScreen;
+        public GameObject victoryScreen;
+        public OutputNumberDisplay outputNumber;
         public GameObject ui_targeting;
 
         [FoldoutGroup("Targeting")] [SerializeField] private TBC_Action hoveringCommandOrder; //current selected command order
         [FoldoutGroup("Targeting")] [SerializeField] private List<TBC_Party> targetingPartyMembers;
-
+        [FoldoutGroup("Targeting")] [SerializeField] private TBC_UI_TargetCursor cursor; //needs to be list for multiple enemies (all/parties)
         private int currentIndex = 0;
 
 
@@ -33,10 +36,54 @@ namespace Xenoride.TBC
         private void Update()
         {
 
+            if (TurnBasedCombat.Instance.IsGameOver)
+            {
+                GameOver();
+            }
+            else if (TurnBasedCombat.Instance.IsVictory)
+            {
+                VictoryScreen();
+            }
+            else
+            {
+                GameRunning();
+            }
 
+
+        }
+
+        private void GameOver()
+        {
+            gameOverScreen.gameObject.EnableGameobject(true);
+            ui_Parent.gameObject.EnableGameobject(false);
+            ui_PartyStats.gameObject.EnableGameobject(false);
+            ui_Children.gameObject.EnableGameobject(false);
+            ui_targeting.gameObject.EnableGameobject(false);
+
+        }
+
+        private void VictoryScreen()
+        {
+            victoryScreen.gameObject.EnableGameobject(true);
+            ui_Parent.gameObject.EnableGameobject(false);
+            ui_PartyStats.gameObject.EnableGameobject(false);
+            ui_Children.gameObject.EnableGameobject(false);
+            ui_targeting.gameObject.EnableGameobject(false);
+        }
+
+        private void GameRunning()
+        {
             if (TurnBasedCombat.Turn.CurrentState == TBC_TurnSystem.TurnState.WaitInput)
             {
-                ui_Parent.gameObject.EnableGameobject(true);
+                if (TurnBasedCombat.Turn.CurrentTurn.party.IsPartyMember)
+                {
+                    ui_Parent.gameObject.EnableGameobject(true);
+                }
+                else
+                {
+                    ui_Parent.gameObject.EnableGameobject(false);
+                }
+
 
                 //SELECTING WHAT COMMAND TO ISSUE
                 if (IsTargetingMode == false)
@@ -45,7 +92,7 @@ namespace Xenoride.TBC
 
                     if (currentTurn.party.IsPartyMember)
                     {
-                        TurnBasedCombat.Camera.LookAtParty(currentTurn.party);
+                        //TurnBasedCombat.Camera.LookAtParty(currentTurn.party);
                     }
                     else
                     {
@@ -72,6 +119,9 @@ namespace Xenoride.TBC
                     ui_Children.blackedOut.EnableGameobject(true);
                     ui_targeting.gameObject.EnableGameobject(true);
                 }
+
+                TurnBasedCombat.Camera.currentCamState = TBC_CameraController.CameraState.LookAtParty;
+
             }
             else if (TurnBasedCombat.Turn.CurrentState == TBC_TurnSystem.TurnState.PlayAnim)
             {
@@ -91,18 +141,10 @@ namespace Xenoride.TBC
         {
             var tags = hoveringCommandOrder.targetTags;
             var currentParty = TurnBasedCombat.Turn.CurrentTurn.party;
-            List<TBC_Party> allTargetables = new List<TBC_Party>();
+            List<TBC_Party> allTargetables = TurnBasedCombat.Turn.GetTargetables(tags);
+            targetingPartyMembers = new List<TBC_Party>();
 
-            if (tags.Contains(TargetTags.Enemy))
-            {
-                allTargetables = TurnBasedCombat.Turn.GetAllEnemies();
-                //list is modifyable
-            }
-            else if (tags.Contains(TargetTags.Party))
-            {
-                allTargetables = TurnBasedCombat.Turn.GetAllPartyMembers();
 
-            }
 
             if (Input.GetMouseButtonUp(1))
             {
@@ -129,15 +171,26 @@ namespace Xenoride.TBC
                 currentIndex = allTargetables.Count - 1;
             }
 
+            if (allTargetables[currentIndex] != null)
+            {
+                targetingPartyMembers.Add(allTargetables[currentIndex]);
+            }
+
             EventSystem.current.SetSelectedGameObject(null);
+            ShowCursors();
 
-            var currentTargetParty = allTargetables[currentIndex];
-
-            if (currentTargetParty.IsPartyMember) 
-                TurnBasedCombat.Camera.LookAtParty(currentTargetParty);
-            else 
-                TurnBasedCombat.Camera.LookAtEnemy(currentTargetParty);
         }
+
+        private void ShowCursors()
+        {
+            if (targetingPartyMembers.Count > 0)
+            {
+                cursor.targetedParty = targetingPartyMembers[0];
+                cursor.gameObject.EnableGameobject(true);
+            }
+        }
+
+
 
 
         #region Targeting
@@ -153,6 +206,18 @@ namespace Xenoride.TBC
         {
             hoveringCommandOrder = null;
             ui_targeting.gameObject.EnableGameobject(false);
+
+        }
+
+        #endregion
+
+        #region Sub-menus (Action)
+
+        public void OpenAC_SpecialAttacks()
+        {
+            var currentParty = TurnBasedCombat.Turn.CurrentTurn.party;
+
+
 
         }
 

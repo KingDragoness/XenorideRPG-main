@@ -17,6 +17,8 @@ namespace Xenoride.TBC
         [SerializeField] private TBC_MainUI mainUI;
         [SerializeField] private TBC_TurnSystem turnSystem;
         [SerializeField] private TBC_CameraController cameraController;
+        public bool IsGameOver = false;
+        public bool IsVictory = false;
 
         public static TBC_MainUI UI
         {

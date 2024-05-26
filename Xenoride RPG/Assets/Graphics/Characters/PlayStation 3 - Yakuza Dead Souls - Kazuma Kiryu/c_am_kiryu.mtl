@@ -1,0 +1,138 @@
+# Blender MTL File: 'None'
+# Material Count: 12
+
+newmtl c_am_kiryu_c_ac_com_eyea_di
+Ns 250.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd c_ac_com_eyeA_di.png
+
+newmtl c_am_kiryu_c_ac_com_mouth_di
+Ns 250.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd c_ac_com_mouth_di.png
+
+newmtl c_am_kiryu_c_am_kiryu_body_di
+Ns 250.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd c_am_kiryu_body_di.png
+
+newmtl c_am_kiryu_c_am_kiryu_eyelashes_di
+Ns 250.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd c_am_kiryu_eyelashes_di.png
+map_d c_am_kiryu_eyelashes_di.png
+
+newmtl c_am_kiryu_c_am_kiryu_face_di
+Ns 250.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd c_am_kiryu_face_di.png
+
+newmtl c_am_kiryu_c_am_kiryu_hair_di
+Ns 250.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd c_am_kiryu_hair_di.png
+map_d c_am_kiryu_hair_di.png
+
+newmtl c_am_kiryu_c_am_kiryu_hair_di_1
+Ns 250.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd c_am_kiryu_hair_di.png
+map_d c_am_kiryu_hair_di.png
+
+newmtl c_am_kiryu_c_am_kiryu_hige_di
+Ns 250.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd c_am_kiryu_hige_di.png
+map_d c_am_kiryu_hige_di.png
+
+newmtl c_am_kiryu_c_am_kiryu_suit_di
+Ns 250.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd c_am_kiryu_suit_di.png
+
+newmtl c_am_kiryu_c_am_kiryu_suit_di_1
+Ns 250.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd c_am_kiryu_suit_di_01.png
+
+newmtl c_am_kiryu_c_am_kiryu_suit_di_2
+Ns 250.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd c_am_kiryu_suit_di_01.png
+
+newmtl c_am_kiryu_no_tex
+Ns 250.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd c_ac_com_eyeA_di.png

@@ -13,8 +13,8 @@ namespace Xenoride.TBC
 		[FoldoutGroup("AI")] public int HP_Threshold = 200; //set to zero if available at anytime.
 
 		public bool IsRanged = true; //ignores running animation
-		[Range(1,5)] public int TargetCount = 1;
-		public List<TargetTags> targetTags = new List<TargetTags>();
+		public List<TargetTags> targetTags = new List<TargetTags>(); //to override tag
+		public TBC_Party targetedUnit;
 
 		public ClipTransition clip_Attack;
 		[HideIf("IsRanged")] public ClipTransition clip_Running;
@@ -23,7 +23,7 @@ namespace Xenoride.TBC
 
 		public abstract void Execute();
 
-
+	
 
 		public virtual void Awake()
         {

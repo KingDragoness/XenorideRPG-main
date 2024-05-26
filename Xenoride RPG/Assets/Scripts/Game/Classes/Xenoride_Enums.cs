@@ -18,7 +18,8 @@ namespace Xenoride
         Nothing,
         All, //targets everything
         Single, //targets one
-        Multiple, //targets multiple
+        AllFoes, //targets all foes
+        AllParty, //targets all party
         Party, //target party member
         Enemy, //target enemy
         Revive = 20 //selects downed party member

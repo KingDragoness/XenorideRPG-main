@@ -12,7 +12,7 @@ namespace Xenoride.TBC
 
         public override void Execute()
         {
-
+            targetedUnit = null;
         }
 
 

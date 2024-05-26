@@ -13,6 +13,7 @@ namespace Xenoride
 
 		public string ID = "Tomas";
 		public string NameDisplay = "Tomas";
+		public float unitSize = 1f; //affects camera's size
 		public Party.Alliance alliance = Party.Alliance.Enemy;
 		public Sprite sprite_wide_201px;
 

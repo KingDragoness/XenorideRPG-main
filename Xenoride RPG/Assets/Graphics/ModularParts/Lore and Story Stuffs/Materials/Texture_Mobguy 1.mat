@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Texture_Mobguy 1
-  m_Shader: {fileID: 4800000, guid: acb932f68f0457b438845eae342a8090, type: 3}
+  m_Shader: {fileID: 4800000, guid: b111866c9c75c634689e12c058bbe5e0, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -64,10 +64,13 @@ Material:
     - _Cutoff: 0.755
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _FadePower: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
+    - _MaxDistance: 3
     - _Metallic: 0
+    - _MinDistance: 2
     - _Mode: 0
     - _NormalIntensity: 0
     - _OcclusionStrength: 1

@@ -28,8 +28,9 @@ namespace Xenoride.TBC
 
 		public void OpenMenu_SpecialAttack()
         {
-
+			TurnBasedCombat.UI.OpenAC_SpecialAttacks();
         }
+
 		public void OpenMenu_Items()
 		{
 

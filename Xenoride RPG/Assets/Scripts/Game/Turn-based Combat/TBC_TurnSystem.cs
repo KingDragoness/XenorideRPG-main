@@ -13,7 +13,9 @@ namespace Xenoride.TBC
         {
             DialoguePause, //wait dialogue text, usually camera cutscene
             WaitInput, //wait player's input
-            PlayAnim //plays attack animation
+            PlayAnim, //plays attack animation
+            Gameover, //game over
+            VictoryScreen //victory!
         }
 
 
@@ -21,9 +23,12 @@ namespace Xenoride.TBC
         [FoldoutGroup("Scene")] [SerializeField] private List<TBC_Party> allPartyMembers = new List<TBC_Party>();
         //private List<Dialogue> insert dialogues here
         [FoldoutGroup("Scene")] [SerializeField] private TurnState turnState;
+        public float TimeTriggerGameover = 4f;
+        public GameEvent event_OnTurnEnd;
 
         [Space]
         [SerializeField] private bool isDebugScreen = false;
+        private float _timerGameover = 4f;
 
 
         [FoldoutGroup("DEBUG")]
@@ -49,6 +54,13 @@ namespace Xenoride.TBC
             }
         }
 
+
+        public List<TBC_Party> GetAllUnits()
+        {
+            return allPartyMembers;
+        }
+
+
         public List<TBC_Party> GetAllPartyMembers()
         {
             return allPartyMembers.FindAll(x => x.IsPartyMember);
@@ -60,15 +72,70 @@ namespace Xenoride.TBC
 
         }
 
+        public List<TBC_Party> GetTargetables(List<TargetTags> targetTags)
+        {
+            var allParties = new List<TBC_Party>();
+            allParties.AddRange(GetAllUnits());
+
+            if (targetTags.Contains(TargetTags.Enemy))
+            {
+                allParties.RemoveAll(x => x.IsPartyMember);
+            }
+            else if (targetTags.Contains(TargetTags.Party))
+            {
+                allParties.RemoveAll(x => x.IsPartyMember == false);
+            }
+
+            if (targetTags.Contains(TargetTags.Revive))
+            {
+            }
+            else
+            {
+                allParties.RemoveAll(x => x.DeadOrFallen);
+            }
+
+
+            return allParties;
+        }
+
         public void ChangeCurrentState(TurnState _state1)
         {
             turnState = _state1;
         }
 
         public TurnState CurrentState { get => turnState; }
+        public List<TBC.TurnOrder> AllCurrentTurnOrders { get => allCurrentTurnOrders; }
 
         private void Update()
         {
+
+            if (TurnBasedCombat.Turn.CurrentState == TurnState.Gameover)
+            {
+                _timerGameover -= Time.deltaTime;
+                TurnBasedCombat.Instance.IsGameOver = true;
+
+                if (_timerGameover <= 0f)
+                {
+                    Time.timeScale = 0f;
+                }
+            }
+            else if (TurnBasedCombat.Turn.CurrentState == TurnState.VictoryScreen)
+            {
+                TurnBasedCombat.Instance.IsVictory = true;
+            }
+
+            var currentParty = TurnBasedCombat.Turn.CurrentTurn.party;
+
+            if (TurnBasedCombat.Turn.CurrentState == TurnState.WaitInput)
+            {
+                currentParty.isDecisionMaking = true;
+            }
+            else
+            {
+                currentParty.isDecisionMaking = false;
+            }
+
+
             if (TurnBasedCombat.Turn.CurrentState == TurnState.PlayAnim)
             {
                 if (CurrentTurn.party.CurrentRunningOrder() == null)
@@ -77,7 +144,17 @@ namespace Xenoride.TBC
                 }
             }
 
-            if (CurrentTurn.party.CurrentRunningOrder() != null)
+            allCurrentTurnOrders.RemoveAll(x => x.party.DeadOrFallen);
+
+            if (IsAllPartyDead())
+            {
+                ChangeCurrentState(TurnState.Gameover);
+            }
+            else if (IsAllEnemyDead())
+            {
+                ChangeCurrentState(TurnState.VictoryScreen);
+            }
+            else if (CurrentTurn.party.CurrentRunningOrder() != null)
             {
                 ChangeCurrentState(TurnState.PlayAnim);
             }
@@ -93,9 +170,45 @@ namespace Xenoride.TBC
   
         }
 
+        public bool IsAllPartyDead()
+        {
+            var partyMembers = GetAllPartyMembers();
+            bool isAllDead = true;
+
+            foreach(var party in partyMembers)
+            {
+                if (party.DeadOrFallen == false)
+                    return false;
+            }
+
+            return isAllDead;
+        }
+
+        public bool IsAllEnemyDead()
+        {
+            var enemies = GetAllEnemies();
+            bool isAllDead = true;
+
+            foreach (var party in enemies)
+            {
+                if (party.DeadOrFallen == false)
+                    return false;
+            }
+
+            return isAllDead;
+        }
+
         public void EndTurn()
         {
+            allCurrentTurnOrders.Add(GenerateTurnOrder(allCurrentTurnOrders[0].party));
             allCurrentTurnOrders.RemoveAt(0);
+            event_OnTurnEnd.Raise();
+        }
+
+        public TBC.TurnOrder GenerateTurnOrder(TBC_Party party)
+        {
+            TBC.TurnOrder turn = new TBC.TurnOrder(party);
+            return turn;
         }
 
 

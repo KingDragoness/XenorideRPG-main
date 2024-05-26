@@ -41,7 +41,7 @@ namespace Xenoride
         private void Awake()
         {
             _instance = this;
-            Application.targetFrameRate = 40;
+            Application.targetFrameRate = 50;
             addGameModule(this);
         }
 

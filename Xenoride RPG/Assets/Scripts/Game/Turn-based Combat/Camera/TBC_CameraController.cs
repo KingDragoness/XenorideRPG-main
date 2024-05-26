@@ -15,22 +15,15 @@ namespace Xenoride.TBC
 		public enum CameraState
         {
 			LookAtParty,
-			LookAtEnemy,
 			PlayAnim
         }
 
 		public CameraState currentCamState;
 		[FoldoutGroup("Play Anim")] public GameObject playAnimationCamera;
-		[FoldoutGroup("Play Anim")] public CinemachineVirtualCamera vc_AttackAnim;
 
 		[FoldoutGroup("Selector Camera")] public GameObject partySelector_Party;
-		[FoldoutGroup("Selector Camera")] public GameObject partySelector_Enemy;
 		[FoldoutGroup("Selector Camera")] public CinemachineVirtualCamera vc_Party;
-		[FoldoutGroup("Selector Camera")] public CinemachineVirtualCamera vc_Enemy;
-		[FoldoutGroup("Selector Camera")] public CinemachineTargetGroup targetGroup_Follow_Party;
 		[FoldoutGroup("Selector Camera")] public CinemachineTargetGroup targetGroup_LookAt_Party;
-		[FoldoutGroup("Selector Camera")] public CinemachineTargetGroup targetGroup_Follow_Enemy;
-		[FoldoutGroup("Selector Camera")] public CinemachineTargetGroup targetGroup_LookAt_Enemy;
 		[FoldoutGroup("Selector Camera")] public float radiusTarget = 5f;
 		[FoldoutGroup("Selector Camera")] public float followOffsetZ = -10f;
 		[FoldoutGroup("Selector Camera")] public float followOffsetY = -10f;
@@ -50,20 +43,12 @@ namespace Xenoride.TBC
 			if (currentCamState == CameraState.LookAtParty)
             {
 				partySelector_Party.gameObject.EnableGameobject(true);
-				partySelector_Enemy.gameObject.EnableGameobject(false);
-
+				LookAtParty(TurnBasedCombat.Turn.GetAllUnits().ToArray());
 			}
-			else if (currentCamState == CameraState.LookAtEnemy)
-            {
-				partySelector_Party.gameObject.EnableGameobject(false);
-				partySelector_Enemy.gameObject.EnableGameobject(true);
 
-			}
-			
 			if (currentCamState == CameraState.PlayAnim)
             {
 				partySelector_Party.gameObject.EnableGameobject(false);
-				partySelector_Enemy.gameObject.EnableGameobject(false);
 				playAnimationCamera.gameObject.EnableGameobject(true);
 				HandlePlayAnimationCam();
 			}
@@ -77,8 +62,8 @@ namespace Xenoride.TBC
 		private void HandlePlayAnimationCam()
         {
 			var currentParty = TurnBasedCombat.Turn.CurrentTurn.party;
-			vc_AttackAnim.LookAt = currentParty.transform;
-			vc_AttackAnim.Follow = currentParty.transform;
+			//vc_AttackAnim.LookAt = currentParty.transform;
+			//vc_AttackAnim.Follow = currentParty.transform;
 
 		}
 
@@ -88,12 +73,6 @@ namespace Xenoride.TBC
         {
 			LookAtParty(DEBUG_PartyMembers.ToArray());
         }
-		[FoldoutGroup("DEBUG")]
-		[Button("Camera - Look at enemies")]
-		public void DEBUG_EnemyLook()
-		{
-			LookAtEnemy(DEBUG_PartyMembers.ToArray());
-		}
 
 		private void WipeList()
         {
@@ -115,7 +94,6 @@ namespace Xenoride.TBC
 
 		public void LookAtParty(TBC_Party[] allParties)
         {
-			targetGroup_Follow_Party.m_Targets = new CinemachineTargetGroup.Target[allParties.Length];
 			targetGroup_LookAt_Party.m_Targets = new CinemachineTargetGroup.Target[allParties.Length];
 
 			int index = 0;
@@ -124,9 +102,8 @@ namespace Xenoride.TBC
 				if (partyMember == null) continue;
 				CinemachineTargetGroup.Target t = new CinemachineTargetGroup.Target();
 				t.target = partyMember.transform;
-				t.weight = 1f;
+				if (partyMember.IsPartyMember == false) t.weight = 1f; else t.weight = 0.8f;
 				t.radius = radiusTarget;
-				targetGroup_Follow_Party.m_Targets[index] = t;
 				targetGroup_LookAt_Party.m_Targets[index] = t;
 				index++;
 
@@ -136,37 +113,7 @@ namespace Xenoride.TBC
 			cot.m_FollowOffset = new Vector3(cot.m_FollowOffset.x, followOffsetY + (perTargetDistanceY * index), followOffsetZ + (perTargetDistanceZ * index));
 		}
 
-		public void LookAtEnemy(TBC_Party enemyUnit)
-		{
-			WipeList();
-			cachedPartyMembers[0] = enemyUnit;
-			LookAtParty(cachedPartyMembers);
-		}
 
-		public void LookAtEnemy(TBC_Party[] allParties)
-		{
-			targetGroup_Follow_Enemy.m_Targets = new CinemachineTargetGroup.Target[allParties.Length];
-			targetGroup_LookAt_Enemy.m_Targets = new CinemachineTargetGroup.Target[allParties.Length];
 
-			int index = 0;
-			foreach (var partyMember in allParties)
-			{
-				if (partyMember == null) continue;
-
-				CinemachineTargetGroup.Target t = new CinemachineTargetGroup.Target();
-				t.target = partyMember.transform;
-				t.weight = 1f;
-				t.radius = radiusTarget;
-				targetGroup_Follow_Enemy.m_Targets[index] = t;
-				targetGroup_LookAt_Enemy.m_Targets[index] = t;
-				index++;
-
-			}
-
-			currentCamState = CameraState.LookAtEnemy;
-			var cot = vc_Enemy.GetCinemachineComponent<CinemachineOrbitalTransposer>();
-			cot.m_FollowOffset = new Vector3(cot.m_FollowOffset.x, followOffsetY + (perTargetDistanceY * index), followOffsetZ + (perTargetDistanceZ * index));
-
-		}
 	}
 }

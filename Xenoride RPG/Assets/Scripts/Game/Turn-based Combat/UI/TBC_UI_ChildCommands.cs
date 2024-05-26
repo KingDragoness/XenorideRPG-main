@@ -9,6 +9,12 @@ namespace Xenoride.TBC
 	{
 
 		public GameObject blackedOut;
+		public ActionCommand_Button buttonPrefab;
+		public Transform parentButton;
+
+		private List<ActionCommand_Button> allACButtons = new List<ActionCommand_Button>();
+
+
 
 	}
 }

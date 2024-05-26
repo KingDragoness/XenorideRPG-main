@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.Events;
 using Sirenix.OdinInspector;
+using MackySoft.Choice;
 using Animancer;
 using Newtonsoft.Json;
 
@@ -21,14 +24,23 @@ namespace Xenoride.TBC
 
 		public PartyMemberSO partyMemberSO;
 		public SaveData.PartyStat partyStat;
-		public List<TBC_Party> targetCommand;
 		public List<TBC_Action> allAvailableCommands = new List<TBC_Action>();
-
 		public List<TBC.OrderToken> currentQueuedOrders = new List<TBC.OrderToken>();
-		[FoldoutGroup("Animations")] public AnimancerPlayer animPlayer;
-		[FoldoutGroup("Animations")] public List<ClipTransition> animationClips = new List<ClipTransition>();
+
+		public Transform originalPost;
+		[Space]
+		[FoldoutGroup("References")] public AnimancerPlayer animPlayer;
+		[FoldoutGroup("References")] public NavMeshAgent agent;
+		[FoldoutGroup("States")] public List<ClipTransition> animationClips = new List<ClipTransition>();
 		[FoldoutGroup("States")] public List<TBC_PartyState> allPartyStates = new List<TBC_PartyState>();
 		[FoldoutGroup("States")] public TBC_PartyState currentState;
+		[FoldoutGroup("States")] public UnityEvent OnDead;
+		[FoldoutGroup("Stats")] public float meleeDistance = 2f;
+		[FoldoutGroup("Stats")] public float timeToDecide = 1f;
+		[FoldoutGroup("Run-time")] public bool isDecisionMaking = false;
+
+		private float _timeToAIRunning = 1f;
+		private bool _deadOrFallen = false;
 
 		public bool IsPartyMember
 		{
@@ -37,6 +49,7 @@ namespace Xenoride.TBC
 				return partyMemberSO.alliance == Party.Alliance.Party ? true : false;
 			}
 		}
+		public bool DeadOrFallen { get => _deadOrFallen; }
 
 		public static List<TBC_Party> GetAllPartyMembers()
 		{
@@ -50,21 +63,109 @@ namespace Xenoride.TBC
 			partyStat.battleStat = partyMemberSO.battleStat;
         }
 
+        #region States
 
-
-		private void Update()
+		public T GetPartyStateByClass<T>() where T : TBC_PartyState
         {
+
+			foreach (var state in allPartyStates)
+			{
+				if (state is T)
+                {
+					return state as T;
+                }
+            }
+
+			return null;
+        }
+
+        #endregion
+
+
+        private void Update()
+        {
+			if (_deadOrFallen)
+            {
+				currentQueuedOrders.Clear();
+			}
+
+			if (CurrentRunningOrder() != null)
+            {
+				PartyState_PlayAttackAnimation paaScript = GetPartyStateByClass<PartyState_PlayAttackAnimation>();
+				currentState = paaScript;
+            }
+            else
+            {
+				PartyState_Idle idleScript = GetPartyStateByClass<PartyState_Idle>();
+				currentState = idleScript;
+
+			}
 
 			if (currentState != null)
             {	
 				currentState.OnState();
             }
 
+
+			if (isDecisionMaking && IsPartyMember == false)
+			{
+				ProcessAIDecision();
+			}
+            else
+            {
+				_timeToAIRunning = 0f;
+
+			}
 		}
+
+		public void ProcessAIDecision()
+        {
+			_timeToAIRunning += Time.deltaTime;
+
+			if (_timeToAIRunning >= timeToDecide)
+            {
+				List<TargetTags> targetTags = new List<TargetTags>();
+				targetTags.Add(TargetTags.Party);
+				targetTags.Add(TargetTags.Single);
+
+				var allPartyList = TurnBasedCombat.Turn.GetTargetables(targetTags);
+				TBC_Action selectedAction = allAvailableCommands.ToWeightedSelector(x => x.weight).SelectItemWithUnityRandom();
+				TBC_Party randomParty = allPartyList[Random.Range(0, allPartyList.Count)];
+
+				IssueOrder(new TBC.OrderToken(selectedAction, randomParty));
+				_timeToAIRunning = 0f;
+			}
+		}
+
+		[FoldoutGroup("DEBUG")]
+		[Button("Kill party")]
+		public void DEBUG_KillParty()
+		{
+			TBC.EffectToken token = new TBC.EffectToken();
+			token.effectType = EffectType.DamageDeal;
+			token.origin = this;
+			token.Value = 999;
+
+			ReceivedEffect(token);
+		}
+
 		public void ReceivedEffect(TBC.EffectToken effectToken)
 		{
+			if (effectToken.effectType == EffectType.DamageDeal)
+            {
+				partyStat.currentHP -= Mathf.RoundToInt(effectToken.Value);
+				PlayAnimationMob(animationClips[1], 0.1f);
 
+				TurnBasedCombat.UI.outputNumber.OneTimeDisplayText_1($"{Mathf.RoundToInt(effectToken.Value)}", Color.white, transform.position);
+            }
+
+			if (partyStat.currentHP <= 0f)
+            {
+				_deadOrFallen = true;
+				OnDead?.Invoke();
+			}
 		}
+
 
 		public void PlayAnimationMob(ClipTransition clipTransition, float time = 0.25f)
 		{
@@ -105,20 +206,33 @@ namespace Xenoride.TBC
 			get { return allAvailableCommands.Find(x => x is Action_Attack); }
 		}
 
-		public void IssueOrder(TBC.OrderToken command)
+
+        public void IssueOrder(TBC.OrderToken command)
 		{
-			var commandOrders = new List<TBC.OrderToken>();
-			commandOrders.Add(command);
-			IssueOrder(commandOrders);
+			currentQueuedOrders.Add(command);
+			IssueOrder(currentQueuedOrders);
 		}
 		public void IssueOrder(List<TBC.OrderToken> commands)
 		{
 			currentQueuedOrders = commands;
 		}
 
+		public void CompleteOrder()
+        {
+			if (currentQueuedOrders.Count <= 0) return;
+			currentQueuedOrders.RemoveAt(0);
+        }
+
 
 		#endregion
 
+		public string GetReport()
+        {
+			string str = "";
+			str = $"{partyStat.currentHP}/{partyStat.MaxHitpoint} HP | {partyStat.currentSP}/{partyStat.MaxSP} SP";
+
+			return str;
+        }
 
 	}
 }
