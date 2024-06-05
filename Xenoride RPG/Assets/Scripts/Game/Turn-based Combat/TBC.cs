@@ -8,7 +8,15 @@ namespace Xenoride.TBC
 
     public class TBC
     {
-        
+
+
+        public enum ChildUI_Type
+        {
+            Item,
+            SpecialAttack
+        }
+
+
         [System.Serializable]
         public class TurnOrder
         {

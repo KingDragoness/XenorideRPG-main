@@ -13,9 +13,13 @@ public static class TimedFunction
 {
 
     public delegate bool OnFunction(); //Return success
-    public static event OnFunction onExecuteCommand;
+    public delegate void OnFunction1(); //Return nothing
+    public delegate T OnFunction2<T>(); //Return any value
 
-    public static void Start(OnFunction _function, float _time = 1f)
+    public static event OnFunction onExecuteCommand;
+    public static event OnFunction1 onExecuteCommand1;
+
+    public static void StartBool(OnFunction _function, float _time = 1f)
     {
         GameObject go = new GameObject();
         go.name = _function.Method.Name;
@@ -24,6 +28,33 @@ public static class TimedFunction
         timedfunction.time = _time;
 
     }
+
+    public static void Start(OnFunction1 _function, float _time = 1f)
+    {
+        GameObject go = new GameObject();
+        go.name = _function.Method.Name;
+        var timedfunction = go.AddComponent<TimedFunctionScript>();
+        timedfunction.function1 = _function;
+        timedfunction.time = _time;
+
+    }
+
+    /// <summary>
+    /// Determine the 'T' type. Do not use it to wait return! Use async/ienumerator!
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="_function"></param>
+    /// <param name="_time"></param>
+    public static void Start<T>(OnFunction2<T> _function, float _time = 1f)
+    {
+        //GameObject go = new GameObject();
+        //go.name = _function.Method.Name;
+        //var timedfunction = go.AddComponent<TimedFunctionScript>();
+        //timedfunction.function2 = _function;
+        //timedfunction.time = _time;
+
+    }
+  
 }
 
 public static class FactoryUtilities
@@ -208,6 +239,14 @@ public static class FactoryUtilities
         }
 
         list.Clear();
+    }
+
+    public static List<T> DuplicateList<T>(this List<T> list)
+    {
+        var newList = new List<T>();
+        newList.AddRange(list);
+
+        return newList;
     }
 
     public static string Capitalize(this string input)

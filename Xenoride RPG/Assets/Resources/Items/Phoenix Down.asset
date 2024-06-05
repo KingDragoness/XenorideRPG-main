@@ -15,6 +15,9 @@ MonoBehaviour:
   ID: PhoenixDown
   NameDisplay: Phoenix Down
   SpriteIcon: {fileID: 0}
+  itemType: 3
   allEffectUnits:
-  - EffectType: 7
+  - EffectType: 20
     Value: 0
+  weaponItem: {fileID: 0}
+  targetTags: 050000001400000002000000

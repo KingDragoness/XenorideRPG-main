@@ -81,4 +81,22 @@ namespace Xenoride.TBC
             TurnBasedCombat.Turn.EndTurn();
         }
     }
+
+    public class CC_TBC_KillAllEnemies : CC_Base
+    {
+        public override string CommandName { get { return "instantwin"; } }
+        public override Module ModuleType { get { return Module.TBC; } }
+        public override string Description { get { return "Kill all enemies."; } }
+
+
+        public override void ExecuteCommand(string[] args)
+        {
+            var parties = TurnBasedCombat.Turn.GetAllEnemies();
+
+            foreach(var party in parties)
+            {
+                party.DEBUG_KillParty();
+            }
+        }
+    }
 }

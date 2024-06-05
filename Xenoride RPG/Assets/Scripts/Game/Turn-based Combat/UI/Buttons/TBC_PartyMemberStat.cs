@@ -11,11 +11,13 @@ namespace Xenoride.TBC
 
 		public TBC_Party partyMember;
 		public Image portrait;
+		public Image crossed_dead;
 		public Slider hitpoint_slider;
 		public Slider sp_slider;
 		public Text label_hitpoint;
 		public Text label_sp;
 		public Text label_partyName;
+
 
         private void Update()
         {
@@ -29,6 +31,9 @@ namespace Xenoride.TBC
 			label_hitpoint.text = Mathf.FloorToInt(partyMember.partyStat.currentHP).ToString();
 			label_sp.text = Mathf.FloorToInt(partyMember.partyStat.currentSP).ToString();
 			label_partyName.text = partyMember.partyMemberSO.NameDisplay;
+
+			if (partyMember.DeadOrFallen) crossed_dead.gameObject.EnableGameobject(true);
+			else crossed_dead.gameObject.EnableGameobject(false);
 
 		}
 

@@ -15,6 +15,9 @@ MonoBehaviour:
   ID: InstantMie
   NameDisplay: Instant Noodles
   SpriteIcon: {fileID: 0}
+  itemType: 3
   allEffectUnits:
   - EffectType: 1
-    Value: 15
+    Value: 16
+  weaponItem: {fileID: 0}
+  targetTags: 0500000002000000

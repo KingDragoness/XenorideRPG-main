@@ -38,6 +38,7 @@ namespace Xenoride
             public BattleStat battleStat;
             public int currentHP = 67;
             public int currentSP = 8;
+            public int TotalXP = 1;
 
             public int MaxHitpoint
             {
@@ -47,6 +48,61 @@ namespace Xenoride
             public int MaxSP
             {
                 get { return battleStat.ENE * 4; }
+            }
+
+            public static int GetNextLevelUp(int level)
+            {
+                return level * 100;
+            }
+
+            public static int GetCurrentXP(int totalXP)
+            {
+                int level = 1;
+                int currentXP = 0;
+
+                while (totalXP >= 0)
+                {
+                    int subtractAmount = GetNextLevelUp(level);
+
+                    if (subtractAmount > totalXP)
+                    {
+                        return totalXP;
+                    }
+
+                    totalXP -= subtractAmount;
+                    level++;
+                }
+
+                return currentXP;
+            }
+
+
+            public static int GetCurrentLevel(int totalXP)
+            {
+                int level = 1;
+
+                while (totalXP >= 0)
+                {
+                    int subtractAmount = GetNextLevelUp(level);
+
+                    if (subtractAmount > totalXP)
+                    {
+                        return level;
+                    }
+
+                    totalXP -= subtractAmount;
+                    level++;
+                }
+
+                return level;
+            }
+
+            public int Level
+            {
+                get
+                {
+                    return GetCurrentLevel(TotalXP);
+                }
             }
 
         }

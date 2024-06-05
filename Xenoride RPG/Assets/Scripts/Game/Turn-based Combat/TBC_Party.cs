@@ -24,6 +24,8 @@ namespace Xenoride.TBC
 
 		public PartyMemberSO partyMemberSO;
 		public SaveData.PartyStat partyStat;
+		public int guid_WeaponItem = -1;
+
 		public List<TBC_Action> allAvailableCommands = new List<TBC_Action>();
 		public List<TBC.OrderToken> currentQueuedOrders = new List<TBC.OrderToken>();
 
@@ -80,6 +82,35 @@ namespace Xenoride.TBC
         }
 
         #endregion
+
+		[FoldoutGroup("DEBUG")] [Button("Assign Weapon")]
+		public void AssignWeapon(int index)
+        {
+			var itemPartyList = TurnBasedCombat.Inventory.PartyInventory.allItemDatas;
+			if (index < 0) return;
+			if (index >= itemPartyList.Count) return;
+			var itemDat = itemPartyList[index];
+
+			if (itemDat.Category != Item.ItemCategory.Weapon) return;
+			var itemSO = Engine.Assets.GetItem(itemDat.ID);
+
+			if (itemSO.weaponItem == null) return;
+			guid_WeaponItem = index;
+		}
+
+		public WeaponItem GetWeaponItem()
+        {
+			var itemPartyList = TurnBasedCombat.Inventory.PartyInventory.allItemDatas;
+			if (guid_WeaponItem < 0) return null;
+			if (guid_WeaponItem >= itemPartyList.Count) return null;
+			var itemDat = itemPartyList[guid_WeaponItem];
+
+			if (itemDat.Category != Item.ItemCategory.Weapon) return null;
+			var itemSO = Engine.Assets.GetItem(itemDat.ID);
+
+			if (itemSO.weaponItem == null) return null;
+			return itemSO.weaponItem;
+        }
 
 
         private void Update()
@@ -149,6 +180,17 @@ namespace Xenoride.TBC
 			ReceivedEffect(token);
 		}
 
+		[FoldoutGroup("DEBUG")]
+		[Button("Resurrect party")]
+		public void DEBUG_ResurrectParty()
+		{
+			TBC.EffectToken token = new TBC.EffectToken();
+			token.effectType = EffectType.Resurrect;
+			token.origin = this;
+
+			ReceivedEffect(token);
+		}
+
 		public void ReceivedEffect(TBC.EffectToken effectToken)
 		{
 			if (effectToken.effectType == EffectType.DamageDeal)
@@ -159,11 +201,38 @@ namespace Xenoride.TBC
 				TurnBasedCombat.UI.outputNumber.OneTimeDisplayText_1($"{Mathf.RoundToInt(effectToken.Value)}", Color.white, transform.position);
             }
 
+			if (effectToken.effectType == EffectType.RestoreHP_Flat)
+			{
+				partyStat.currentHP += Mathf.RoundToInt(effectToken.Value);
+
+				TurnBasedCombat.UI.outputNumber.OneTimeDisplayText_1($"{Mathf.RoundToInt(effectToken.Value)}", Color.white, transform.position);
+			}
+
+			if (effectToken.effectType == EffectType.RestoreHP_Percent)
+			{
+				partyStat.currentHP += Mathf.RoundToInt(partyStat.MaxHitpoint * effectToken.Value);
+
+				TurnBasedCombat.UI.outputNumber.OneTimeDisplayText_1($"{Mathf.RoundToInt(effectToken.Value)}", Color.white, transform.position);
+			}
+
+			if (effectToken.effectType == EffectType.Resurrect)
+            {
+				partyStat.currentHP = Mathf.RoundToInt(partyStat.MaxHitpoint / 2f);
+				TurnBasedCombat.Turn.QueueTurnOrder(this);
+				_deadOrFallen = false;
+			}
+
 			if (partyStat.currentHP <= 0f)
             {
 				_deadOrFallen = true;
+				if (IsPartyMember == false) TurnBasedCombat.Turn.TotalXPGain += partyMemberSO.Enemy_XPReward;
 				OnDead?.Invoke();
 			}
+
+			if (partyStat.currentHP >= partyStat.MaxHitpoint)
+            {
+				partyStat.currentHP = partyStat.MaxHitpoint;
+            }
 		}
 
 
@@ -205,9 +274,12 @@ namespace Xenoride.TBC
 		{
 			get { return allAvailableCommands.Find(x => x is Action_Attack); }
 		}
+		public Action_UseItem UseItemCommand
+		{
+			get { return allAvailableCommands.Find(x => x is Action_UseItem) as Action_UseItem; }
+		}
 
-
-        public void IssueOrder(TBC.OrderToken command)
+		public void IssueOrder(TBC.OrderToken command)
 		{
 			currentQueuedOrders.Add(command);
 			IssueOrder(currentQueuedOrders);

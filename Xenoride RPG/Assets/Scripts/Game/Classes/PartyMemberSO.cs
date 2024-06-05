@@ -19,11 +19,12 @@ namespace Xenoride
 
 		[Space]
 		public SaveData.BattleStat battleStat;
+		public int startingLevel = 1;
 
 
 		[FoldoutGroup("CalculationTest")] public int HP = 0;
 		[FoldoutGroup("CalculationTest")] public int SP = 0;
-
+		[FoldoutGroup("Enemy")] public int Enemy_XPReward = 16;
 
 		[Button("Calculate Stat")]
 		public void CalculateStat()

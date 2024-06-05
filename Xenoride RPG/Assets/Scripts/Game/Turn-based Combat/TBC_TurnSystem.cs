@@ -26,6 +26,8 @@ namespace Xenoride.TBC
         public float TimeTriggerGameover = 4f;
         public GameEvent event_OnTurnEnd;
 
+        [FoldoutGroup("Victory")] public int TotalXPGain = 0;
+
         [Space]
         [SerializeField] private bool isDebugScreen = false;
         private float _timerGameover = 4f;
@@ -88,6 +90,7 @@ namespace Xenoride.TBC
 
             if (targetTags.Contains(TargetTags.Revive))
             {
+                allParties.RemoveAll(x => x.DeadOrFallen == false);
             }
             else
             {
@@ -205,7 +208,15 @@ namespace Xenoride.TBC
             event_OnTurnEnd.Raise();
         }
 
-        public TBC.TurnOrder GenerateTurnOrder(TBC_Party party)
+        public void QueueTurnOrder(TBC_Party party)
+        {
+            if (allCurrentTurnOrders.Find(x => x.party == party) != null) return; //already exists!
+
+            allCurrentTurnOrders.Add(GenerateTurnOrder(party));
+
+        }
+
+        private TBC.TurnOrder GenerateTurnOrder(TBC_Party party)
         {
             TBC.TurnOrder turn = new TBC.TurnOrder(party);
             return turn;

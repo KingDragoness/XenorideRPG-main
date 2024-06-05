@@ -17,6 +17,7 @@ namespace Xenoride
     {
 
 		[SerializeField] private ConsoleCommand _consoleCommand;
+        [SerializeField] private Assets _assets;
         [SerializeField] private List<GameModule> _allLoadedGameModules = new List<GameModule>();
 
         public static ConsoleCommand Console
@@ -24,6 +25,13 @@ namespace Xenoride
             get
             {
                 return Instance._consoleCommand;
+            }
+        }
+        public static Assets Assets
+        {
+            get
+            {
+                return Instance._assets;
             }
         }
 

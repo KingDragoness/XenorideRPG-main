@@ -12,6 +12,7 @@ namespace Xenoride.TBC
 		[FoldoutGroup("AI")] public int weight = 10;
 		[FoldoutGroup("AI")] public int HP_Threshold = 200; //set to zero if available at anytime.
 
+		public int LevelThreshold = -1;
 		public bool IsRanged = true; //ignores running animation
 		public List<TargetTags> targetTags = new List<TargetTags>(); //to override tag
 		public TBC_Party targetedUnit;
