@@ -30,10 +30,11 @@ namespace Xenoride.TBC
 		public List<TBC.OrderToken> currentQueuedOrders = new List<TBC.OrderToken>();
 
 		public Transform originalPost;
+		public Transform actionCommandsParent;
 		[Space]
+		public List<ClipTransition> animationClips = new List<ClipTransition>();
 		[FoldoutGroup("References")] public AnimancerPlayer animPlayer;
 		[FoldoutGroup("References")] public NavMeshAgent agent;
-		[FoldoutGroup("States")] public List<ClipTransition> animationClips = new List<ClipTransition>();
 		[FoldoutGroup("States")] public List<TBC_PartyState> allPartyStates = new List<TBC_PartyState>();
 		[FoldoutGroup("States")] public TBC_PartyState currentState;
 		[FoldoutGroup("States")] public UnityEvent OnDead;
@@ -57,7 +58,16 @@ namespace Xenoride.TBC
 		{
 			return TurnBasedCombat.Instance.sceneSpace.GetComponentsInChildren<TBC_Party>().ToList();
 		}
-
+		public List<Action_SpecialAttack> GetAction_SpecialAttackType()
+		{
+			var list1 = new List<Action_SpecialAttack>();
+			foreach(var co in allAvailableCommands)
+            {
+				if (co is Action_SpecialAttack)
+					list1.Add(co as Action_SpecialAttack);
+            }
+			return list1;
+		}
 
 		[FoldoutGroup("DEBUG")] [Button("Copy Party Stat")]
 		public void CopyPartyStat()
@@ -97,6 +107,16 @@ namespace Xenoride.TBC
 			if (itemSO.weaponItem == null) return;
 			guid_WeaponItem = index;
 		}
+
+		[FoldoutGroup("DEBUG")]
+		[Button("Install Special Attack")]
+		public void InstallSpecialAttack(SpecialAttackSO specialAttackSO)
+        {
+			if (GetAction_SpecialAttackType().Find(x => x.attachedSO == specialAttackSO) != null) return;
+			var prefab1 = Instantiate(specialAttackSO.actionPrefab, actionCommandsParent);
+
+			allAvailableCommands.Add(prefab1);
+        }
 
 		public WeaponItem GetWeaponItem()
         {
@@ -191,6 +211,18 @@ namespace Xenoride.TBC
 			ReceivedEffect(token);
 		}
 
+		[FoldoutGroup("DEBUG")]
+		[Button("Low HP party")]
+		public void DEBUG_SetLowHPParty()
+		{
+			TBC.EffectToken token = new TBC.EffectToken();
+			token.effectType = EffectType.DamageDeal;
+			token.origin = this;
+			token.Value = partyStat.currentHP * 0.5f;
+
+			ReceivedEffect(token);
+		}
+
 		public void ReceivedEffect(TBC.EffectToken effectToken)
 		{
 			if (effectToken.effectType == EffectType.DamageDeal)
@@ -212,7 +244,7 @@ namespace Xenoride.TBC
 			{
 				partyStat.currentHP += Mathf.RoundToInt(partyStat.MaxHitpoint * effectToken.Value);
 
-				TurnBasedCombat.UI.outputNumber.OneTimeDisplayText_1($"{Mathf.RoundToInt(effectToken.Value)}", Color.white, transform.position);
+				TurnBasedCombat.UI.outputNumber.OneTimeDisplayText_1($"{Mathf.RoundToInt(partyStat.MaxHitpoint * effectToken.Value)}", Color.white, transform.position);
 			}
 
 			if (effectToken.effectType == EffectType.Resurrect)

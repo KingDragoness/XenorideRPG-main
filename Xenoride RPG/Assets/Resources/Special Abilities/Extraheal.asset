@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02a4e4404eff24d43a10b2ed1ecdb41b, type: 3}
+  m_Name: Extraheal
+  m_EditorClassIdentifier: 
+  ID: Extraheal
+  NameDisplay: Extraheal
+  SPCost: 5
+  actionPrefab: {fileID: 6664357611787383134, guid: 8fe2295e5b5430445914975e5e708168,
+    type: 3}

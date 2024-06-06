@@ -31,6 +31,7 @@ namespace Xenoride.TBC
             {
                 button.button.onClick.RemoveAllListeners();
                 button.ItemSO = null;
+                button.SpecialAttack = null;
             }
 
             allACButtons.ReleasePoolObject();
@@ -49,6 +50,8 @@ namespace Xenoride.TBC
                     if (item.itemType != Item.ItemCategory.Consumable) continue;
 
                     var button = buttonPrefab.gameObject.Reuse<ActionCommand_Button>(parentButton);
+                    button.buttonType = TBC.ChildUI_Type.Item;
+
                     button.gameObject.SetActive(true);
                     button.label_Left.text = $"{item.NameDisplay}";
                     button.label_Right.text = $"x{itemData.Count}";
@@ -74,6 +77,39 @@ namespace Xenoride.TBC
             {
                 label_Header.text = $"Special Abilities";
                 icon.sprite = Engine.Assets.sprite_SpecialAttack;
+
+                var currentParty = TurnBasedCombat.Turn.CurrentTurn.party;
+                var allSpecialAtks = currentParty.GetAction_SpecialAttackType();
+                
+                foreach(var specialAtk in allSpecialAtks)
+                {
+                    if (specialAtk.attachedSO == null) continue;
+                    if (currentParty.partyStat.Level < specialAtk.LevelThreshold) continue;
+                    if (specialAtk.attachedSO.SPCost > currentParty.partyStat.currentSP) continue;
+
+                    var button = buttonPrefab.gameObject.Reuse<ActionCommand_Button>(parentButton);
+                    button.buttonType = TBC.ChildUI_Type.SpecialAttack;
+
+                    button.gameObject.SetActive(true);
+                    button.label_Left.text = $"{specialAtk.attachedSO.NameDisplay}";
+                    button.label_Right.text = $"[{specialAtk.attachedSO.SPCost} SP]";
+                    button.icon_BlackandWhite.gameObject.SetActive(false);
+                    button.icon_Colored.gameObject.SetActive(false);
+                    button.SpecialAttack = specialAtk;
+
+                    if (button.CheckAnyTargetAvailable(specialAtk.targetTags) == false)
+                    {
+                        button.button.interactable = false;
+                    }
+                    else
+                    {
+                        button.button.interactable = true;
+                    }
+
+                    allACButtons.Add(button);
+                    index++;
+                }
+
             }
 
             buttonExit.transform.SetAsLastSibling();

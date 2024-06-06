@@ -27,8 +27,10 @@ namespace Xenoride.TBC
 		}
 
         public ItemSO ItemSO { get => _itemSO; set => _itemSO = value; }
+		public Action_SpecialAttack SpecialAttack { get => _specialAttack; set => _specialAttack = value; }
 
-        private ItemSO _itemSO;
+		private ItemSO _itemSO;
+		private Action_SpecialAttack _specialAttack;
 
 		public void Execute()
         {
@@ -45,6 +47,7 @@ namespace Xenoride.TBC
 			else if (buttonType ==  TBC.ChildUI_Type .SpecialAttack)
             {
 				//select action
+				TurnBasedCombat.UI.OpenTargetSelection(SpecialAttack);
 
 			}
 		}

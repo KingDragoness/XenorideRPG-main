@@ -11,7 +11,9 @@ namespace Xenoride
 	public class SpecialAttackSO : ScriptableObject
 	{
 
-		public string ID = "";
+		public string ID = "Revive";
+		public string NameDisplay = "Revive";
+		public int SPCost = 4;
 		public TBC.TBC_Action actionPrefab;
 
 	}

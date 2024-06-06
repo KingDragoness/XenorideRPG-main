@@ -853,8 +853,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weight: 10
   HP_Threshold: 200
+  LevelThreshold: 999
   IsRanged: 1
-  targetTags: 
+  targetTags: 00000000
   targetedUnit: {fileID: 0}
   clip_Attack:
     _FadeDuration: 0.25
@@ -862,7 +863,7 @@ MonoBehaviour:
       _NormalizedTimes: []
       _Callbacks: []
       _Names: []
-    _Clip: {fileID: 0}
+    _Clip: {fileID: 7400000, guid: 053ec18f067de0a4c9650802e1995cb6, type: 3}
     _Speed: 1
     _NormalizedStartTime: 0
   clip_Running:
@@ -874,6 +875,11 @@ MonoBehaviour:
     _Clip: {fileID: 0}
     _Speed: 1
     _NormalizedStartTime: 0
+  attachedSO: {fileID: 0}
+  allEffectUnits:
+  - EffectType: 1
+    Value: 1000
+  allowEndOrderUponExecution: 0
 --- !u!1 &2635594730702130083
 GameObject:
   m_ObjectHideFlags: 0
@@ -1004,8 +1010,7 @@ MonoBehaviour:
   - {fileID: 6529589074861430230}
   currentQueuedOrders: []
   originalPost: {fileID: 0}
-  animPlayer: {fileID: 8161564584453347258}
-  agent: {fileID: 7995857399949511822}
+  actionCommandsParent: {fileID: 1546238828217011089}
   animationClips:
   - _FadeDuration: 0.25
     _Events:
@@ -1047,6 +1052,8 @@ MonoBehaviour:
     _Clip: {fileID: 7400000, guid: a16cbf1e833a9a245959413aaed82913, type: 3}
     _Speed: 1
     _NormalizedStartTime: 0
+  animPlayer: {fileID: 8161564584453347258}
+  agent: {fileID: 7995857399949511822}
   allPartyStates:
   - {fileID: 2317129912318703453}
   - {fileID: 7348980839147475313}
@@ -2589,6 +2596,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weight: 10
   HP_Threshold: 200
+  LevelThreshold: -1
   IsRanged: 1
   targetTags: 0200000006000000
   targetedUnit: {fileID: 0}
@@ -3276,6 +3284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weight: 10
   HP_Threshold: 200
+  LevelThreshold: -1
   IsRanged: 1
   targetTags: 00000000
   targetedUnit: {fileID: 0}
@@ -3284,7 +3293,7 @@ MonoBehaviour:
     _Events:
       _NormalizedTimes:
       - 0.46666667
-      - 0.5
+      - 0.80911887
       - NaN
       _Callbacks:
       - m_PersistentCalls:
@@ -3300,9 +3309,24 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
-      _Names: []
+      - m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 9034448403770140529}
+            m_MethodName: CompleteOrder
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      _Names:
+      - Execute
+      - Complete Order
     _Clip: {fileID: 7400000, guid: 99b323d71d522734aae0dc0e5c4774c9, type: 3}
-    _Speed: 2
+    _Speed: 1.3
     _NormalizedStartTime: 0
   clip_Running:
     _FadeDuration: 0.25

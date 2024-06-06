@@ -30,8 +30,12 @@ namespace Xenoride.TBC
             }
 
             TurnBasedCombat.Inventory.PartyInventory.RemoveItem(targetItem.ID, 1);
-            partyScript.CompleteOrder();
             targetedUnit = null;
+        }
+
+        public void CompleteOrder()
+        {
+            partyScript.CompleteOrder();
         }
 
 
