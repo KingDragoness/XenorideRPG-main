@@ -18,6 +18,7 @@ namespace Xenoride.TBC
         [SerializeField] private TBC_TurnSystem turnSystem;
         [SerializeField] private TBC_CameraController cameraController;
         [SerializeField] private TBC_Inventory inventory;
+        [SerializeField] private TBC_Debugger debugger;
         public bool IsGameOver = false;
         public bool IsVictory = false;
 
@@ -36,6 +37,10 @@ namespace Xenoride.TBC
         public static TBC_Inventory Inventory
         {
             get { return _instance.inventory; }
+        }
+        public static TBC_Debugger Debugger
+        {
+            get { return _instance.debugger; }
         }
 
         [Space]

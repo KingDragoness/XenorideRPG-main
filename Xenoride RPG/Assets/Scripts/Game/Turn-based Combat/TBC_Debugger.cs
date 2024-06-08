@@ -10,6 +10,8 @@ namespace Xenoride.TBC
 
 		public bool isDebuggingScreen = false;
 
+        [FoldoutGroup("Cheats")] public bool cheat_100ChanceBlockRate = false;
+
         private void Update()
         {
             if (Input.GetKeyUp(KeyCode.F3))

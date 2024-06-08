@@ -15,6 +15,15 @@ namespace Xenoride
         public float Value = 0f;
     }
 
+    public enum TypeBattleStat
+    {
+        VIT, //vitality
+        STR, //strength
+        SHOOT, //shooting
+        DEX, //dexterity
+        ENE //energy
+    }
+
     public enum TargetTags
     {
         Nothing,

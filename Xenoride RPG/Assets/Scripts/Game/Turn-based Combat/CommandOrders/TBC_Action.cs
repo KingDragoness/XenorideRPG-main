@@ -36,5 +36,21 @@ namespace Xenoride.TBC
 			return targetTags.FindIndex(x => x == tag) == -1 ? false : true;
         }
 
+		public void BlockedAction()
+        {
+			TurnBasedCombat.UI.outputNumber.OneTimeDisplayText_1($"BLOCK", Color.red, transform.position);
+
+		}
+
+		public void CounteredAction(float damage)
+        {
+			TurnBasedCombat.UI.outputNumber.OneTimeDisplayText_1($"COUNTER", Color.red, transform.position);
+			TBC.EffectToken effect = new TBC.EffectToken();
+			effect.Value = damage;
+			effect.origin = partyScript;
+			effect.effectType = EffectType.DamageDeal;
+			partyScript.ReceivedEffect(effect);
+		}
+
 	}
 }

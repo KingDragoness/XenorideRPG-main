@@ -44,7 +44,7 @@ namespace Xenoride.TBC
 
             foreach (var party in allParty)
             {
-                allCurrentTurnOrders.Add(new TBC.TurnOrder(party));
+                AddTurnOrder(new TBC.TurnOrder(party));
             }
         }
 
@@ -101,6 +101,12 @@ namespace Xenoride.TBC
             return allParties;
         }
 
+        private void Start()
+        {
+            ReloadUI();
+        }
+
+
         public void ChangeCurrentState(TurnState _state1)
         {
             turnState = _state1;
@@ -147,7 +153,8 @@ namespace Xenoride.TBC
                 }
             }
 
-            allCurrentTurnOrders.RemoveAll(x => x.party.DeadOrFallen);
+            //allCurrentTurnOrders.RemoveAll(x => x.party.DeadOrFallen);
+            RemoveTurnOrderAllBy(allCurrentTurnOrders.FindAll(x => x.party.DeadOrFallen));
 
             if (IsAllPartyDead())
             {
@@ -203,17 +210,49 @@ namespace Xenoride.TBC
 
         public void EndTurn()
         {
-            allCurrentTurnOrders.Add(GenerateTurnOrder(allCurrentTurnOrders[0].party));
-            allCurrentTurnOrders.RemoveAt(0);
+            AddTurnOrder(GenerateTurnOrder(allCurrentTurnOrders[0].party));
+            RemoveTurnOrder(allCurrentTurnOrders[0]);
             event_OnTurnEnd.Raise();
+        }
+
+        public void RemoveTurnOrderAllBy(List<TBC.TurnOrder> allTurnOrders)
+        {
+            foreach(var to in allTurnOrders)
+            {
+                RemoveTurnOrder(to);
+            }
+        }
+
+        public void RemoveTurnOrder(TBC.TurnOrder turn1)
+        {
+            var firstEntry = allCurrentTurnOrders.Find(x => x == turn1);
+            allCurrentTurnOrders.Remove(firstEntry);
+            var turnOrderButton = TurnBasedCombat.UI.ui_TurnOrder.allTurnOrderButtons.Find(x => x.assignedTurn == firstEntry);
+            turnOrderButton.deleteTurn = true;
+        }
+
+        public void AddTurnOrder(TBC.TurnOrder turn1, int index = -1)
+        {
+            TurnBasedCombat.UI.ui_TurnOrder.CreateButton(turn1, index);
+            allCurrentTurnOrders.Add(turn1);
         }
 
         public void QueueTurnOrder(TBC_Party party)
         {
             if (allCurrentTurnOrders.Find(x => x.party == party) != null) return; //already exists!
 
-            allCurrentTurnOrders.Add(GenerateTurnOrder(party));
+            AddTurnOrder(GenerateTurnOrder(party));
 
+            //allCurrentTurnOrders.Add(GenerateTurnOrder(party));
+
+        }
+
+        public void ReloadUI()
+        {
+            foreach(var turn in allCurrentTurnOrders)
+            {
+                TurnBasedCombat.UI.ui_TurnOrder.CreateButton(turn);
+            }
         }
 
         private TBC.TurnOrder GenerateTurnOrder(TBC_Party party)

@@ -57,5 +57,15 @@ namespace Xenoride.TBC
             prev_Level = demLevel;
         }
 
+        public int TotalLevelups(int XP)
+        {
+            var party = partyTarget;
+            int projectedXP = party.partyStat.TotalXP + XP;
+
+            int demLevel = SaveData.PartyStat.GetCurrentLevel(projectedXP);
+
+            return Mathf.Abs(demLevel - party.partyStat.Level);
+        }
+
 	}
 }

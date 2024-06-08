@@ -85,6 +85,7 @@ GameObject:
   - component: {fileID: 2530134553026711323}
   - component: {fileID: 2530134553026711321}
   - component: {fileID: 2530134553026711322}
+  - component: {fileID: 9050549149334211576}
   m_Layer: 5
   m_Name: sprite_portrait
   m_TagString: Untagged
@@ -148,6 +149,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.9
+--- !u!114 &9050549149334211576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2530134553026711316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2530134554791608370
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,6 +178,8 @@ GameObject:
   - component: {fileID: 2530134554791608374}
   - component: {fileID: 3690340917517205941}
   - component: {fileID: 3993772766686591900}
+  - component: {fileID: 4489014772463663634}
+  - component: {fileID: 1742593149592201154}
   m_Layer: 5
   m_Name: Panel_TurnOrder
   m_TagString: Untagged
@@ -254,8 +272,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e39e4f95040e42649bd4a9f6a19e6376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cg: {fileID: 3993772766686591900}
+  turnOrderScript: {fileID: 0}
   imagePortrait: {fileID: 2530134553026711322}
+  animatorButton: {fileID: 1742593149592201154}
+  rectTransform: {fileID: 2530134554791608369}
+  TimeToHide: 0.3
+  deleteTurn: 0
   index: 0
 --- !u!225 &3993772766686591900
 CanvasGroup:
@@ -269,6 +291,40 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &4489014772463663634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2530134554791608370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
+--- !u!95 &1742593149592201154
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2530134554791608370}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5a6cd79f1e75c6b459cf00eb1158939d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3690340917063420808
 GameObject:
   m_ObjectHideFlags: 0

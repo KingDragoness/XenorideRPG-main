@@ -17,6 +17,7 @@ namespace Xenoride.TBC
         public TBC_UI_ActionCommand ui_Parent;
         public TBC_UI_ChildCommands ui_Children;
         public TBC_UI_PartyStats ui_PartyStats;
+        public TBC_UI_TurnOrder ui_TurnOrder;
         public GameObject gameOverScreen;
         public GameObject victoryScreen;
         public OutputNumberDisplay outputNumber;

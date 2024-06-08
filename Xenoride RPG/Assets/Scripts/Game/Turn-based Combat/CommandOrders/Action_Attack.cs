@@ -11,6 +11,7 @@ namespace Xenoride.TBC
 	{
 
         public float Damage = 8f;
+        public float BlockThresholdChance = 0.9f;
 
         public override void Execute()
         {
@@ -19,15 +20,35 @@ namespace Xenoride.TBC
             //Get current party member's hold weapon
             //calculate damage output
             Debug.Log("Executed attack animation.");
-            float variableDmg = Mathf.Round(Damage/9f) + 1f;
+            float variableDmg = Mathf.Round(Damage / 9f) + 1f;
+            float blockChance = 0f;
 
-            if (targetedUnit != null)
+            if (TurnBasedCombat.Debugger.cheat_100ChanceBlockRate)
+            {
+                blockChance = 1f;
+            }
+
+
+            if (targetedUnit != null && blockChance < BlockThresholdChance)
             {
                 TBC.EffectToken effect = new TBC.EffectToken();
                 effect.Value = Damage + Random.Range(-variableDmg, variableDmg);
                 effect.origin = partyScript;
                 effect.effectType = EffectType.DamageDeal;
                 targetedUnit.ReceivedEffect(effect);
+            }
+            else if (blockChance >= BlockThresholdChance)
+            {
+                float counterChance = Random.Range(0f, 1f);
+
+                if (counterChance > 0.5f)
+                {
+                    BlockedAction();
+                }
+                else
+                {
+                    CounteredAction(Damage);
+                }
             }
 
             partyScript.CompleteOrder();

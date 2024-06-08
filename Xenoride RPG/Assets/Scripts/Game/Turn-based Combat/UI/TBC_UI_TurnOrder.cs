@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using ToolBox.Pools;
 
@@ -11,8 +12,11 @@ namespace Xenoride.TBC
 
 		public TBC_UIButton_TurnOrder prefab;
         public Transform parentButton;
+        public VerticalLayoutGroup verticalLayoutGroup;
+        public float speed = 100f;
 		public List<TBC_UIButton_TurnOrder> allTurnOrderButtons = new List<TBC_UIButton_TurnOrder>();
         public int maxTurnsShown = 8;
+
 
         private void Awake()
         {
@@ -21,21 +25,55 @@ namespace Xenoride.TBC
 
         private void Update()
         {
-            allTurnOrderButtons.ReleasePoolObject();
-
             int index = 0;
+            var rtVLG = verticalLayoutGroup.GetComponent<RectTransform>();
 
-            foreach (var turn in TurnBasedCombat.Turn.AllCurrentTurnOrders)
+            //reading buttons
+            foreach (var button in allTurnOrderButtons)
             {
-                if (index >= maxTurnsShown) break;
-                var button = prefab.gameObject.Reuse<TBC_UIButton_TurnOrder>(parentButton); //Instantiate(prefab, parentButton);
+                Vector3 targetedPosition = rtVLG.anchoredPosition;
+
+                if (button.deleteTurn)
+                {
+                    targetedPosition.x += 100f;
+                }
+
+                targetedPosition.y -= index * (button.rectTransform.sizeDelta.y);
                 button.gameObject.SetActive(true);
-                button.imagePortrait.sprite = turn.party.partyMemberSO.sprite_wide_201px;
+                button.imagePortrait.sprite = button.assignedTurn.party.partyMemberSO.sprite_wide_201px;
+                button.rectTransform.anchoredPosition = Vector3.MoveTowards(button.rectTransform.anchoredPosition, targetedPosition, Time.deltaTime * speed);
+
                 index++;
-                allTurnOrderButtons.Add(button);
             }
 
+
         }
+
+        public void CreateButton(TBC.TurnOrder turnOrder, int index = -1)
+        {
+            var rtVLG = verticalLayoutGroup.GetComponent<RectTransform>();
+
+            if (allTurnOrderButtons.Find(x => x.assignedTurn == turnOrder) != null) return; //already exist turn.
+
+            var button = prefab.gameObject.Reuse<TBC_UIButton_TurnOrder>(parentButton);
+            button.assignedTurn = turnOrder;
+            button.deleteTurn = false;
+            allTurnOrderButtons.Add(button);
+            Vector3 targetedPosition = rtVLG.anchoredPosition;
+            targetedPosition.y -= index * (button.rectTransform.sizeDelta.y);
+
+            if (index == -1)
+            {
+                targetedPosition.y -= allTurnOrderButtons.Count * (button.rectTransform.sizeDelta.y);
+            }
+
+            //Debug.Log("added");
+            button.rectTransform.anchoredPosition = targetedPosition;
+        }
+
+
+
+
 
     }
 }

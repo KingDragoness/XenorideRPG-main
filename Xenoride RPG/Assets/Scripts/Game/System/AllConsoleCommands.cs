@@ -82,6 +82,20 @@ namespace Xenoride.TBC
         }
     }
 
+    public class CC_TBC_AlwaysBlock : CC_Base
+    {
+        public override string CommandName { get { return "cc.blocked"; } }
+        public override Module ModuleType { get { return Module.TBC; } }
+        public override string Description { get { return "Always got blocked or countered."; } }
+
+
+        public override void ExecuteCommand(string[] args)
+        {
+            TurnBasedCombat.Debugger.cheat_100ChanceBlockRate = !TurnBasedCombat.Debugger.cheat_100ChanceBlockRate;
+            ConsoleCommand.Instance.SendConsoleMessage($"100% block rate: {TurnBasedCombat.Debugger.cheat_100ChanceBlockRate}");
+        }
+    }
+
     public class CC_TBC_KillAllEnemies : CC_Base
     {
         public override string CommandName { get { return "instantwin"; } }
