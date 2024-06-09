@@ -38,8 +38,16 @@ namespace Xenoride.TBC
                     targetedPosition.x += 100f;
                 }
 
+                if (index >= maxTurnsShown)
+                {
+                    button.gameObject.SetActive(false);
+                }
+                else
+                {
+                    button.gameObject.SetActive(true);
+                }
+
                 targetedPosition.y -= index * (button.rectTransform.sizeDelta.y);
-                button.gameObject.SetActive(true);
                 button.imagePortrait.sprite = button.assignedTurn.party.partyMemberSO.sprite_wide_201px;
                 button.rectTransform.anchoredPosition = Vector3.MoveTowards(button.rectTransform.anchoredPosition, targetedPosition, Time.deltaTime * speed);
 
@@ -60,6 +68,7 @@ namespace Xenoride.TBC
             button.deleteTurn = false;
             allTurnOrderButtons.Add(button);
             Vector3 targetedPosition = rtVLG.anchoredPosition;
+            targetedPosition.x += 100f;
             targetedPosition.y -= index * (button.rectTransform.sizeDelta.y);
 
             if (index == -1)

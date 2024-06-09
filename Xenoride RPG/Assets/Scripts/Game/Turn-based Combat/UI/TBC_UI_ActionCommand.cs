@@ -9,8 +9,9 @@ namespace Xenoride.TBC
 	public class TBC_UI_ActionCommand : MonoBehaviour
 	{
 
+		
 
-		private TBC_Party GetCurrentParty
+        private TBC_Party GetCurrentParty
         {
             get { return TurnBasedCombat.Turn.CurrentTurn.party; }
         }

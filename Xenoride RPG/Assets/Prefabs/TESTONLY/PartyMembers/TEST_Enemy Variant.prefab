@@ -147,7 +147,7 @@ PrefabInstance:
     - target: {fileID: 8689765786959062574, guid: e2f8b774a9795b847855f16a57a97a8f,
         type: 3}
       propertyPath: partyStat.currentHP
-      value: 45
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 8689765786959062574, guid: e2f8b774a9795b847855f16a57a97a8f,
         type: 3}
@@ -156,8 +156,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8689765786959062574, guid: e2f8b774a9795b847855f16a57a97a8f,
         type: 3}
+      propertyPath: partyStat.battleStat.ENE
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8689765786959062574, guid: e2f8b774a9795b847855f16a57a97a8f,
+        type: 3}
+      propertyPath: partyStat.battleStat.STR
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8689765786959062574, guid: e2f8b774a9795b847855f16a57a97a8f,
+        type: 3}
       propertyPath: partyStat.battleStat.VIT
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8689765786959062574, guid: e2f8b774a9795b847855f16a57a97a8f,
         type: 3}

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Extraheal
   NameDisplay: Extraheal
+  Description: Heals one ally by 25% of its total HP.
   SPCost: 5
   actionPrefab: {fileID: 6664357611787383134, guid: 8fe2295e5b5430445914975e5e708168,
     type: 3}

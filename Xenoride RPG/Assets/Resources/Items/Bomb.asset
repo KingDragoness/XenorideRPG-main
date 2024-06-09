@@ -16,6 +16,7 @@ MonoBehaviour:
   NameDisplay: Bomb
   SpriteIcon: {fileID: 0}
   itemType: 3
+  Description: Deals 25 HP to one foe.
   allEffectUnits:
   - EffectType: 0
     Value: 25

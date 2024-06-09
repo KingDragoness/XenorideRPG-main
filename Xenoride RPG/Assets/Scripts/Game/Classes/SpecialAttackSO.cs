@@ -13,6 +13,7 @@ namespace Xenoride
 
 		public string ID = "Revive";
 		public string NameDisplay = "Revive";
+		[TextArea(3,5)] public string Description = "Revive dead party members.";
 		public int SPCost = 4;
 		public TBC.TBC_Action actionPrefab;
 

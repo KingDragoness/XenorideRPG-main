@@ -276,6 +276,9 @@ MonoBehaviour:
   imagePortrait: {fileID: 2530134553026711322}
   animatorButton: {fileID: 1742593149592201154}
   rectTransform: {fileID: 2530134554791608369}
+  assignedTurn:
+    party: {fileID: 0}
+  canvasGroup: {fileID: 3993772766686591900}
   TimeToHide: 0.3
   deleteTurn: 0
   index: 0

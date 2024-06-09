@@ -15,6 +15,7 @@ namespace Xenoride
 		public string NameDisplay = "Phoenix Down";
 		public Sprite SpriteIcon;
 		public Item.ItemCategory itemType;
+		[TextArea(3, 5)] public string Description = "Revive dead party members.";
 		[ShowIf("itemType", Item.ItemCategory.Consumable)] public List<EffectUnit> allEffectUnits = new List<EffectUnit>();
 		[ShowIf("itemType", Item.ItemCategory.Weapon)] public WeaponItem weaponItem;
 		[ShowIf("itemType", Item.ItemCategory.Consumable)] public List<TargetTags> targetTags = new List<TargetTags>();

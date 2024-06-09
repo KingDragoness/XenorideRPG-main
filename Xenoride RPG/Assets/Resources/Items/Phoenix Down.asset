@@ -16,6 +16,7 @@ MonoBehaviour:
   NameDisplay: Phoenix Down
   SpriteIcon: {fileID: 0}
   itemType: 3
+  Description: Revive one dead party member.
   allEffectUnits:
   - EffectType: 20
     Value: 0

@@ -18,12 +18,12 @@ MonoBehaviour:
   alliance: 2
   sprite_wide_201px: {fileID: 21300000, guid: 895a308f372ec46499ef47333d1c95e5, type: 3}
   battleStat:
-    VIT: 8
+    VIT: 4
     STR: 2
     SHOOT: 1
     DEX: 1
     ENE: 2
   startingLevel: 1
-  HP: 72
+  HP: 36
   SP: 8
   Enemy_XPReward: 250

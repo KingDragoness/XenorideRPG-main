@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using Sirenix.OdinInspector;
 
 namespace Xenoride.TBC
@@ -17,6 +18,7 @@ namespace Xenoride.TBC
 		public Text label_Right;
 		public Image icon_Colored;
 		public Image icon_BlackandWhite;
+		public GenericUI_DescriptionButton gudButton;
 
 
 		public TBC.ChildUI_Type buttonType;
@@ -65,5 +67,26 @@ namespace Xenoride.TBC
 			return true;
 		}
 
+		public void AttemptHighlight()
+        {
+			if (buttonType == TBC.ChildUI_Type.Item)
+			{
+				var item = ItemSO;
+				gudButton.descriptionTooltipText = item.Description;
+
+			}
+			else if (buttonType == TBC.ChildUI_Type.SpecialAttack)
+			{
+				var so = SpecialAttack.attachedSO;
+				gudButton.descriptionTooltipText = so.Description;
+			}
+
+			GenericUI_Description.Instance.ShowDescription(gudButton);
+		}
+
+		public void Dehighlight()
+        {
+			GenericUI_Description.Instance.HideDescription(gudButton);
+        }
 	}
 }

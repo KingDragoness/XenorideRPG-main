@@ -25,6 +25,12 @@ namespace Xenoride.TBC
             buttonPrefab.gameObject.SetActive(false);
         }
 
+
+        private void TEST()
+        {
+            buttonPrefab.button.Select();
+        }
+
         public void OpenedChildCommand(TBC.ChildUI_Type uiType)
         {
             foreach (var button in allACButtons)

@@ -16,6 +16,7 @@ MonoBehaviour:
   NameDisplay: Instant Noodles
   SpriteIcon: {fileID: 0}
   itemType: 3
+  Description: Heals 16 HP to one ally.
   allEffectUnits:
   - EffectType: 1
     Value: 16

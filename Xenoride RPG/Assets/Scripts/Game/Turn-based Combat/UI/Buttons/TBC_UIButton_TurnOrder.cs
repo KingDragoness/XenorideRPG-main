@@ -15,6 +15,7 @@ namespace Xenoride.TBC
         public Animator animatorButton;
         public RectTransform rectTransform;
         public TBC.TurnOrder assignedTurn;
+        public CanvasGroup canvasGroup;
         public float TimeToHide = 0.3f;
 		public bool deleteTurn = false;
 
